@@ -12,7 +12,7 @@ To use an image from a different channel (beta or alpha), follow the directions 
 
 ## CoreOS Security Group
 
-The CoreOS etcd component is responsible for cluster discovery and provides a distributed lock manager (like Google Chubby).  `etcd` uses port `7001` for peer coordination and port `4001` for as a user REST API.  Both ports need to be enabled.  You can do this by either adding rules for these ports to the `default` security group, or create a new security group called `coreos`:
+The CoreOS `etcd` service is responsible for cluster discovery and provides a distributed lock service for the cluster (like Google's Chubby).  `etcd` uses port `7001` for peer coordination and port `4001` for as a user REST API.  Both ports need to be enabled on CoreOS hosts.  You can do this by either adding ingress rules for these ports to the `default` security group, or create a new security group (called `coreos` in the examples below):
 
 ```sh
 nova secgroup-create coreos "coreos security group with rules for etcd"
@@ -47,9 +47,9 @@ ssh_authorized_keys:
   - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC0g+ZTxC7weoIJLUafOgrm+h...
 ```
 
-The `$private_ipv4` and `$public_ipv4` substitution variables are fully supported in cloud-config. For HP Public Cloud, make sure to use the $public_ipv4 value.
+The `$private_ipv4` and `$public_ipv4` substitution variables are fully supported in cloud-config. For HP Public Cloud, make sure to use the `$public_ipv4` substitution variable for both the `addr` and `peer-addr` hosts.
 
-NOTE in the above: You must replace two fields: the `https://discovery.etcd.io/<token>` URL with a real discovery token obtained as listed above, and the SSH public key with your own.
+```NOTE in the above example: You must replace two fields: the https://discovery.etcd.io/<token> URL with a real discovery token obtained as listed above, and the SSH public key with your own.```
 
 Troubleshooting tip: EVERY TIME you create a new cluster, also create a new cluster token, especially if you're reusing the same floating IP's.
 
@@ -85,9 +85,9 @@ nova boot \
 coreos
 ```
 
-NOTE: Use the same SSH key in the --key-name option as you used in the cloud-config file.
+```NOTE: Use the same SSH key in the --key-name option as you used in the cloud-config file.```
 
-NOTE: substitute the Network ID that you obtained in the previous step.
+```NOTE: substitute the Network ID that you obtained in the previous step.```
 
 ## Floating IP's
 
