@@ -10,6 +10,18 @@ To use an image from a different channel (beta or alpha), follow the directions 
 
 [coreos-guide]: https://coreos.com/docs/running-coreos/platforms/openstack/
 
+## CoreOS Security Group
+
+The CoreOS etcd component is responsible for cluster discovery and provides a distributed lock manager (like Google Chubby).  `etcd` uses port `7001` for peer coordination and port `4001` for as a user REST API.  Both ports need to be enabled.  You can do this by either adding rules for these ports to the `default` security group, or create a new security group called `coreos`:
+
+```sh
+nova secgroup-create coreos "coreos security group with rules for etcd"
+nova secgroup-add-rule coreos icmp -1 -1 0.0.0.0/0
+nova secgroup-add-rule coreos tcp 22 22 0.0.0.0/0
+nova secgroup-add-rule coreos tcp 4001 4001 0.0.0.0/0
+nova secgroup-add-rule coreos tcp 7001 7001 0.0.0.0/0
+```
+
 ## Cloud-Config
 
 Create a cloud-config file named cloud-config.yaml.  The most common cloud-config for OpenStack looks like:
@@ -37,7 +49,7 @@ ssh_authorized_keys:
 
 The `$private_ipv4` and `$public_ipv4` substitution variables are fully supported in cloud-config. For HP Public Cloud, make sure to use the $public_ipv4 value.
 
-NOTE in the above: You must replace two fields: the `https://discovery.etcd.io/<token>` URL with a real discovery toek obtained as listed above, and the SSH public key with your own.
+NOTE in the above: You must replace two fields: the `https://discovery.etcd.io/<token>` URL with a real discovery token obtained as listed above, and the SSH public key with your own.
 
 Troubleshooting tip: EVERY TIME you create a new cluster, also create a new cluster token, especially if you're reusing the same floating IP's.
 
@@ -68,7 +80,7 @@ nova boot \
 --key-name coreos \
 --flavor m1.medium \
 --num-instances 3 \
---security-groups default \
+--security-groups coreos \
 --nic net-id=5b9c5ef6-28b9-4781-ac18-d7d86765fd38 \
 coreos
 ```
@@ -139,7 +151,8 @@ nova boot \
 --image CoreOS \
 --key-name coreos \
 --flavor m1.medium \
---security-groups default coreos
+--security-groups coreos \
+coreos
 ```
 
 ## Multiple Clusters
