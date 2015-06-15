@@ -1,6 +1,6 @@
 # Running CoreOS on HP Public Cloud (hpcloud.com) 
 
-This page is meant to be used in conjunction with the CoreOS OpenStack [guide][coreos-guide].
+This page was derived from, and is meant to be used in conjunction with, the CoreOS OpenStack [guide][coreos-guide].
 
 ## CoreOS Image
 
