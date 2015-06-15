@@ -4,7 +4,7 @@ This page is meant to be used in conjunction with the CoreOS OpenStack [guide][c
 
 ## CoreOS Image
 
-The stable CoreOS image is already registered as a partner image in glance with the name CoreOS.
+The stable CoreOS image is already registered as a partner image in glance with the name ```CoreOS```.
 
 To use an image from a different channel (beta or alpha), follow the directions in the CoreOS [guide][coreos-guide].
 
@@ -37,7 +37,7 @@ ssh_authorized_keys:
 
 The `$private_ipv4` and `$public_ipv4` substitution variables are fully supported in cloud-config. For HP Public Cloud, make sure to use the $public_ipv4 value.
 
-NOTE in the above: You must replace two fields: the https://discovery.etcd.io/<token> URL with a real discovery toek obtained as listed above, and the SSH public key.
+NOTE in the above: You must replace two fields: the `https://discovery.etcd.io/<token>` URL with a real discovery toek obtained as listed above, and the SSH public key with your own.
 
 Troubleshooting tip: EVERY TIME you create a new cluster, also create a new cluster token, especially if you're reusing the same floating IP's.
 
@@ -77,7 +77,7 @@ NOTE: Use the same SSH key in the --key-name option as you used in the cloud-con
 
 NOTE: substitute the Network ID that you obtained in the previous step.
 
-# Floating IP's
+## Floating IP's
 
 Now you'll need to assign floating IP's to each instance.  You can create new floating IP's with the following:
 
@@ -121,7 +121,7 @@ core@15.126.y.a ~ $
 
 ## Troubleshooting
 
-Find out if etcd is running by issuing a ```ps -ef```
+Find out if etcd is running by issuing a ```ps -ef |grep etcd```
 
 If not, the following command may give some context: ```journalctl -u etcd```
 
